@@ -34,6 +34,7 @@ describe('Работа с вкладкой виджетов', () => {
         cy.get(".patient-MPI__search-button").click()
         cy.contains("Изменить")
         cy.get("[data-cy='input-serviceRequest.requesterOrganization']").type("6c34dc18-cab0-4e53-aba8-cea197f0ab5e{enter}")
+        cy.get("[data-cy='input-serviceRequest.healthCareService']").type("4fb5b7e0-e1a4-4965-b91d-63a77bfbb4b8{enter}")
 
         // сохраняем заявку
         cy.contains("Сохранить").click()
