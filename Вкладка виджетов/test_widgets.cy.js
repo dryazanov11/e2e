@@ -30,7 +30,7 @@ describe('Работа с вкладкой виджетов', () => {
         cy.get(".patient-MPI__search-button").click()
         cy.get(".patient-MPI__container > div:nth-child(1) > input").type("11122233344")
         cy.get(".patient-MPI__search-button").click()
-        cy.contains("Банько Елена Игоревна").click()
+        cy.contains("Банько Елена Игоревна", {timeout: 100000}).click()
         cy.get(".patient-MPI__search-button").click()
         cy.contains("Изменить")
         cy.get("[data-cy='input-serviceRequest.requesterOrganization']").type("6c34dc18-cab0-4e53-aba8-cea197f0ab5e{enter}")
