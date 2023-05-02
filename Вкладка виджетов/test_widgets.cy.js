@@ -53,6 +53,7 @@ describe('Работа с вкладкой виджетов', () => {
 
         // переводим в следующий статус загрузив файл
         cy.contains("To Status 2").click()
+        cy.get(".array-list__add").click()
         cy.get(".form-fileXDS__button").selectFile("C:/Users/User/cypress/cypress/autotest_file.txt")
         cy.contains("Файл autotest_file загружен")
         cy.contains("Сохранить").click()

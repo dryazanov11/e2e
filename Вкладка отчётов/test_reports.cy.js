@@ -16,11 +16,11 @@ describe('Проверка вкладки отчётов', () => {
         cy.visit('reports/')
         
         // выбираем агрегированный отчёт
-        cy.contains("Aggregate report")
+        cy.contains("Aggregate report", {timeout: 20000})
         cy.visit("report/tm/68b2ec93-6401-49da-8362-8d22e0ebfd2b/aggregate/f9f4e1bc-54d5-4017-91e1-b247079c0315", {timeout: 5000})
         
         // проверяем что в нем есть данные
-        cy.contains("Не указано", {timeout: 5000})
+        cy.contains("Не указано", {timeout: 20000})
         cy.get(".total__count").should('not.have.text', '0').and('not.have.text', '1')
 
         // фильтруем данные по колопроктологии, код 100 в справочнике 1.2.643.2.69.1.1.1.56
@@ -71,11 +71,11 @@ describe('Проверка вкладки отчётов', () => {
         cy.visit('reports/')
         
         // выбираем агрегированный отчёт
-        cy.contains("QA-aggregate report")
+        cy.contains("QA-aggregate report", {timeout: 20000})
         cy.visit("report/tm/68b2ec93-6401-49da-8362-8d22e0ebfd2b/aggregate/89c876df-8885-4068-8214-6e93dcb15978", {timeout: 5000})
         
         // проверяем что в нем есть данные
-        cy.contains("Не указано", {timeout: 5000})
+        cy.contains("Не указано", {timeout: 20000})
         cy.get(".total__count").should('not.have.text', '0').and('not.have.text', '1')
 
         // фильтруем данные по нейрохирургии, код 40 в справочнике 1.2.643.2.69.1.1.1.56
