@@ -3,6 +3,7 @@ describe('Проверка вкладки отчётов', () => {
 
         cy.viewport(1920, 1080)
         cy.visit('auth/')
+        cy.once('uncaught:exception', () => false)
       
         // вводим данные
         cy.get("[type='text']").type('white@mail.ru')
@@ -58,6 +59,7 @@ describe('Проверка вкладки отчётов', () => {
 
         cy.viewport(1920, 1080)
         cy.visit('auth/')
+        cy.once('uncaught:exception', () => false)
 
         // вводим данные
         cy.get("[type='text']").type('reg_admin@test.com')

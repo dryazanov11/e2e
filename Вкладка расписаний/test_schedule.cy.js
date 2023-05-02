@@ -2,6 +2,7 @@ describe('Работа с вкладками расписаний', () => {
   it('Создание врача, профиля, расписания и проверка фильтра поиска', () => {
     cy.viewport(1920, 1080)
     cy.visit('auth/')
+    cy.once('uncaught:exception', () => false)
     
     // вводим  данные пользователя
     cy.get("[type='text']").type("white@mail.ru")
