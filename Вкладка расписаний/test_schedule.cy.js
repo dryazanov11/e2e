@@ -27,6 +27,7 @@ describe('Работа с вкладками расписаний', () => {
     cy.get("[data-cy='doctor-name-0']").should("contain", "Беляевский Евгений Борисович")
 
     //удаляем добавленное значение и проверяем что оно больше не находится
+    cy.get(".TotalContainer").should("contain", "Всего строк: 1")
     cy.get("[data-cy='remove-practitioner']", {timeout: 5000}).click()
     cy.contains("По запросу не нашлось результатов")
 
@@ -93,6 +94,9 @@ describe('Работа с вкладками расписаний', () => {
     let day = d.getDate().toString(), month = (d.getMonth() + 1).toString(), year = d.getFullYear().toString()
     if (month < 10){
       month = 0 + month
+    }
+    if (day < 10){
+      day = 0 + day
     }
     let date = year + "-" + month + "-" + day
 
