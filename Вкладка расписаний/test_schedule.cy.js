@@ -16,8 +16,12 @@ describe('Работа с вкладками расписаний', () => {
     // переходим ко вкладке "Врачи"
     cy.get("[data-cy='menu-practitioner']", {timeout: 5000}).click()
     
-    // добавляем врача
+    // добавляем врача прописав сначала неверный СНИЛС, а потом верный
     cy.contains("Добавить врача").click()
+    cy.get("[data-cy='practitioner-snils'] > div > input").type('11111111111')
+    cy.contains("ИСКАТЬ ВРАЧА", {timeout: 5000}).click()
+    cy.contains("Врача с указанным СНИЛС не найдено в ФРМР")
+    cy.get("[data-cy='practitioner-cancel']").click()
     cy.get("[data-cy='practitioner-snils'] > div > input").type('01069948355')
     cy.contains("ИСКАТЬ ВРАЧА", {timeout: 5000}).click()
     cy.contains("СОХРАНИТЬ", {timeout: 100000}).click()
