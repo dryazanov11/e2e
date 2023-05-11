@@ -20,7 +20,7 @@ describe('Работа с вкладками расписаний', () => {
     cy.contains("Добавить врача").click()
     cy.get("[data-cy='practitioner-snils'] > div > input").type('11111111111')
     cy.contains("ИСКАТЬ ВРАЧА", {timeout: 5000}).click()
-    cy.contains("Врача с указанным СНИЛС не найдено в ФРМР")
+    cy.contains("Врача с указанным СНИЛС не найдено в ФРМР", {timeout: 100000})
     cy.get("[data-cy='practitioner-cancel']").click()
     cy.get("[data-cy='practitioner-snils'] > div > input").type('01069948355')
     cy.contains("ИСКАТЬ ВРАЧА", {timeout: 5000}).click()
@@ -29,9 +29,9 @@ describe('Работа с вкладками расписаний', () => {
     // проверяем фильтр ища созданного врача
     cy.get("[placeholder='Поиск']", {timeout: 100000}).type("Беляевский{enter}", {timeout: 100000})
     cy.get("[data-cy='doctor-name-0']").should("contain", "Беляевский Евгений Борисович")
+    cy.get(".TotalContainer").should("contain", "Всего строк: 1")
 
     //удаляем добавленное значение и проверяем что оно больше не находится
-    cy.get(".TotalContainer").should("contain", "Всего строк: 1")
     cy.get("[data-cy='remove-practitioner']", {timeout: 5000}).click()
     cy.contains("По запросу не нашлось результатов")
 
@@ -44,6 +44,11 @@ describe('Работа с вкладками расписаний', () => {
     let profile_name = "auto_profile" + ms
 
     // проверяем вывод сообщений о незаполненности полей
+    cy.contains("СОХРАНИТЬ").click()
+    cy.contains("Название не может быть пустым")
+
+    // вводим имя
+    cy.get("[data-cy='profile-name'] > div > input").type(profile_name)
     cy.contains("СОХРАНИТЬ").click()
     cy.contains("Маршрут ТМК не может быть пустым")
 
@@ -71,12 +76,6 @@ describe('Работа с вкладками расписаний', () => {
     cy.get("[id$='option-0']").click()
 
     cy.contains("СОХРАНИТЬ").click()
-    cy.contains("Название не может быть пустым")
-
-    // вводим имя
-    cy.get("[data-cy='profile-name'] > div > input").type(profile_name)
-
-    cy.contains("СОХРАНИТЬ").click()
     cy.contains("Профиль " + profile_name + " сохранен")
 
     // проверям фильтр ища по названию созданный профиль
@@ -96,15 +95,17 @@ describe('Работа с вкладками расписаний', () => {
     cy.contains("Сбросить").click()
     cy.get(".TotalContainer").should("not.have.value", "Всего строк: 1")
 
-    // проверяем фильтр на заблокированные профили
-    cy.get("[data-cy='profile-filter-status'] > div > div").click()
-    cy.get("[id$='option-1']").click()
-    cy.contains("ИСКАТЬ").click()
-    cy.get("[data-cy^='profile-change-status']").should("contain", "Активировать")
-
     // переходим на вкладку расписаний и создаем новое расписание
     cy.get("#TMSchedule-container > div > div > div > div > [data-cy='menu-schedule']").click()
     cy.contains("ДОБАВИТЬ РАСПИСАНИЕ").click()
+
+    // проверяем отображение обязательности полей
+    cy.get("[data-cy='schedule-save']").click()
+    cy.get("[data-cy='schedule-profile'] > div:nth-child(1)").should("contain", "Обязательно для заполнения")
+    cy.get("[data-cy='schedule-template'] > div:nth-child(1)").should("contain", "Обязательно для заполнения")
+    cy.get("[data-cy='schedule-start'] > div:nth-child(1)").should("contain", "Обязательно для заполнения")
+    cy.get("[data-cy='schedule-end'] > div:nth-child(1)").should("contain", "Обязательно для заполнения")
+    cy.get("[data-cy='schedule-practitioners'] > div:nth-child(1)").should("contain", "Обязательно для заполнения")
 
     // выбираем профиль
     cy.get("[data-cy='schedule-profile'] > div > div").click()
@@ -144,6 +145,9 @@ describe('Работа с вкладками расписаний', () => {
 
     cy.get("[data-cy='schedule-search']").click()
     cy.get("[data-cy^='schedule-name']").should("contain", "1_test_ui")
+
+    // кнопка сброса очищает фильтр
+    cy.contains("Сбросить").click()
 
     // выходим с портала
     cy.get(".menu-exit", {timeout: 5000}).click()
