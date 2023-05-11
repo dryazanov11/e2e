@@ -43,12 +43,16 @@ describe('Работа с вкладками расписаний', () => {
     let ms = Date.now()
     let profile_name = "auto_profile" + ms
 
-    // вводим имя
-    cy.get("[data-cy='profile-name'] > div > input").type(profile_name)
+    // проверяем вывод сообщений о незаполненности полей
+    cy.contains("СОХРАНИТЬ").click()
+    cy.contains("Маршрут ТМК не может быть пустым")
 
     // выбираем маршрут
     cy.get("[data-cy='profile-workflow'] > div > div").click()
     cy.get("[id$='option-0']").click()
+
+    cy.contains("СОХРАНИТЬ").click()
+    cy.contains("Не указаны атрибуты профиля")
 
     //атрибут возрастной категории граждан
     cy.get("[data-cy='row-multi-select-1.2.643.2.69.1.1.1.223']").click()
@@ -67,6 +71,12 @@ describe('Работа с вкладками расписаний', () => {
     cy.get("[id$='option-0']").click()
 
     cy.contains("СОХРАНИТЬ").click()
+    cy.contains("Название не может быть пустым")
+
+    // вводим имя
+    cy.get("[data-cy='profile-name'] > div > input").type(profile_name)
+
+    cy.contains("СОХРАНИТЬ").click()
     cy.contains("Профиль " + profile_name + " сохранен")
 
     // проверям фильтр ища по названию созданный профиль
@@ -81,6 +91,16 @@ describe('Работа с вкладками расписаний', () => {
     cy.contains("Заблокировано")
     cy.get("[data-cy='profile-change-status-0']").click()
     cy.contains("Активно")
+
+    // проверяем что кнопка сброса возвращает весь список профилей
+    cy.contains("Сбросить").click()
+    cy.get(".TotalContainer").should("not.have.value", "Всего строк: 1")
+
+    // проверяем фильтр на заблокированные профили
+    cy.get("[data-cy='profile-filter-status'] > div > div").click()
+    cy.get("[id$='option-1']").click()
+    cy.contains("ИСКАТЬ").click()
+    cy.get("[data-cy^='profile-change-status']").should("contain", "Активировать")
 
     // переходим на вкладку расписаний и создаем новое расписание
     cy.get("#TMSchedule-container > div > div > div > div > [data-cy='menu-schedule']").click()
