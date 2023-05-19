@@ -8,7 +8,7 @@ describe('Работа с вкладками расписаний', () => {
     cy.get("[type='text']").type("white@mail.ru")
     cy.get("[type='password']").type("123")
 
-    cy.get(".button__primary").click()
+    cy.get("[data-cy='submit-login-form']").click()
 
     // открываем вкладку "Расписание и профили"
     cy.contains("РАСПИСАНИЕ И ПРОФИЛИ").click()
@@ -45,10 +45,13 @@ describe('Работа с вкладками расписаний', () => {
 
     // проверяем вывод сообщений о незаполненности полей
     cy.contains("СОХРАНИТЬ").click()
-    cy.contains("Название не может быть пустым")
+    cy.contains("Сервис не может быть пустым")
 
-    // вводим имя
-    cy.get("[data-cy='profile-name'] > div > input").type(profile_name)
+    // выбираем сервис
+    cy.get("[data-cy='profile-instance'] > div > div").click()
+    cy.get("[id$='option-1']").click()
+
+    cy.contains("СОХРАНИТЬ").click()
     cy.contains("СОХРАНИТЬ").click()
     cy.contains("Маршрут ТМК не может быть пустым")
 
@@ -60,7 +63,7 @@ describe('Работа с вкладками расписаний', () => {
     cy.contains("Не указаны атрибуты профиля")
 
     //атрибут возрастной категории граждан
-    cy.get("[data-cy='row-multi-select-1.2.643.2.69.1.1.1.223']").click()
+    cy.get("[data-cy='row-multi-select-1.2.643.2.69.1.1.1.223']", {timeout: 100000}).click()
     cy.get("[id$='option-0']").click()
 
     // атрибут номенклатуры мед услуг
@@ -68,13 +71,18 @@ describe('Работа с вкладками расписаний', () => {
     cy.get("[id$='option-0']", {timeout: 100000}).click()
 
     // атрибут составного профиля помощи
-    cy.get("[data-cy='row-multi-select-1.2.643.2.69.1.1.1.56']").click()
+    cy.get("[data-cy='row-multi-select-1.2.643.2.69.1.1.1.56']", {timeout: 100000}).click()
     cy.get("[id$='option-0']").click()
 
     // атрибут типа предоставления услуги
-    cy.get("[data-cy='attribute-1.2.643.2.69.1.1.1.182.32']").click()
+    cy.get("[data-cy='attribute-1.2.643.2.69.1.1.1.182.32']", {timeout: 100000}).click()
     cy.get("[id$='option-0']").click()
 
+    cy.contains("СОХРАНИТЬ").click()
+    cy.contains("Название не может быть пустым")
+
+    // вводим имя
+    cy.get("[data-cy='profile-name'] > div > input").type(profile_name)
     cy.contains("СОХРАНИТЬ").click()
     cy.contains("Профиль " + profile_name + " сохранен")
 
@@ -86,9 +94,9 @@ describe('Работа с вкладками расписаний', () => {
     cy.get("[data-cy='profile-name-0']").should("contain", profile_name)
 
     // проверяем на созданном профиле блокировку
-    cy.get("[data-cy='profile-change-status-0']").click()
+    cy.get("[data-cy='profile-change-status-0']", {timeout: 100000}).click()
     cy.contains("Заблокировано")
-    cy.get("[data-cy='profile-change-status-0']").click()
+    cy.get("[data-cy='profile-change-status-0']", {timeout: 100000}).click()
     cy.contains("Активно")
 
     // проверяем что кнопка сброса возвращает весь список профилей

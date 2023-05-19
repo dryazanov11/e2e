@@ -9,7 +9,7 @@ describe('Проверка вкладки отчётов', () => {
         cy.get("[type='text']").type('white@mail.ru')
         cy.get("[type='password']").type('123')
   
-        cy.get(".button__primary").click()
+        cy.get("[data-cy='submit-login-form']").click()
 
         // переходим на вкладку отчётов
         cy.get("[for='check']", {timeout: 5000}).click()
@@ -65,7 +65,7 @@ describe('Проверка вкладки отчётов', () => {
         cy.get("[type='text']").type('reg_admin@test.com')
         cy.get("[type='password']").type('123')
 
-        cy.get(".button__primary").click()
+        cy.get("[data-cy='submit-login-form']").click()
 
         // переходим на вкладку отчётов
         cy.get("[for='check']", {timeout: 5000}).click()
@@ -89,7 +89,7 @@ describe('Проверка вкладки отчётов', () => {
         cy.contains("Получить данные").click()
 
         // проверяем что в отчёте данные по фильтру и скачиваем его - не забыть открыть файл и глянуть что там данные по фильтру
-        cy.get(".total__count").should("contain", "1")
+        cy.get(".total__count", {timeout: 20000}).should("contain", "1")
         cy.contains("Санкт-Петербургское государственное бюджетное учреждение здравоохранения \"Городская Александровская больница\"")
         cy.get("[data-cy='aggregate-report-download']", {timeout: 5000}).click()
 
@@ -109,6 +109,12 @@ describe('Проверка вкладки отчётов', () => {
         // проверяем что в отчёте данные по фильтру и скачиваем его - не забыть открыть файл и глянуть что там данные по фильтру
         cy.get("tr > td:nth-child(5)").should("contain", "Черновик")
         cy.get("[data-cy='common-report-download']", {timeout: 5000}).click()
+
+        // добавляем новый фильтр чтобы данные не были найдены
+        cy.get("[data-cy='business_status_code'] > div > input").type("99")
+        cy.get("[data-cy='business_status_code'] > div > div").click()
+        cy.contains("Получить данные").click()
+        cy.get(".total__count", {timeout: 20000}).should("contain", "0")
 
     })
   })

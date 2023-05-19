@@ -9,7 +9,7 @@ describe('Работа с вкладкой виджетов', () => {
         cy.get("[type='text']").type("white@mail.ru")
         cy.get("[type='password']").type("123")
 
-        cy.get(".button__primary").click()
+        cy.get("[data-cy='submit-login-form']").click()
 
         // проверяем, что идет полное отображение данных (по умолчанию установлено именно оно)
         cy.get(".card__status-date").should("contain", "Создано")
@@ -37,6 +37,14 @@ describe('Работа с вкладкой виджетов', () => {
         cy.get("[data-cy='input-serviceRequest.healthCareService']").type("4fb5b7e0-e1a4-4965-b91d-63a77bfbb4b8{enter}")
 
         // сохраняем заявку
+        cy.contains("Сохранить").click()
+
+        // проверяем вывод сообщения о незаполненном параметре
+        cy.contains("Заполните обязательные поля")
+        cy.get(".form-input__title_error")
+
+        // дозаполняем заявку
+        cy.get("[data-cy='input-serviceRequest.сomplaints']").type("жалоба")
         cy.contains("Сохранить").click()
         cy.contains("Операции", {timeout: 100000})
 
